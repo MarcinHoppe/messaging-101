@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Wszystko, co chcielibyście wiedzieć o komunikacji przez kolejki, ale baliście się zapytać</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		
+		<style>
+			.reveal section img { 
+				background: none;
+				border: none;
+				box-shadow: none;
+			}
+		</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<p>Wszystko, co chcielibyście wiedzieć o...</p>
+					<h1>komunikacji przez kolejki</h1>
+					<p>... ale baliście się zapytać</p>
+					<p>&nbsp;</p>
+					<p>Marcin Hoppe / <a href="https://twitter.com/marcin_hoppe">@marcin_hoppe</a></p>
+					<img src="images/Particular-wb.png" alt="Particular Software" style="height: auto; width:auto; max-width: 400px;" />
+				</section>
+				<section>
+					<h1>Moja historia</h1>
+					<img src="images/timeline.png" />
+				</section>
+				<section>
+					<h1>ABC endpointów</h1>
+					<h2 class="fragment">Address</h2>
+					<h2 class="fragment">Binding</h2>
+					<h2 class="fragment">Contract</h2>
+				</section>
+				<section>
+					<h1>Contract</h1>
+				</section>
+				<section>
+					<h1>Wiadomość</h1>
+					<img src="images/msg.png" />
+				</section>
+				<section>
+					<h1>Semantyka</h1>
+				</section>
+				<section>
+					<h1>Polecenie</h1>
+					<img src="images/cmd.png" />
+				</section>
+				<section>
+					<h1>Zdarzenie</h1>
+					<img src="images/event.png" />
+				</section>
+				<section>
+					<h1>Address</h1>
+				</section>
+				<section>
+					<h1>Kolejka wejściowa</h1>
+					<img src="images/queue.png" />
+					<h3 class="fragment"><q>endpoint@server.acme.com</q></h3>
+				</section>
+				<section>
+					<h1>Wzorce</h1>
+				</section>
+				<section>
+					<h1>One-way</h1>
+					<img class="fragment" src="images/one-way.png" />
+				</section>
+				<section>
+					<h1>Request/Response</h1>
+					<img class="fragment" src="images/req-resp.png" />
+				</section>
+				<section>
+					<h1>Pub/Sub</h1>
+					<img class="fragment" src="images/pub-sub.png" />
+				</section>
+				<section>
+					<h1>Adres zwrotny</h1>
+					<h3 class="fragment">Nagłówki</h3>
+				</section>
+				<section>
+					<h1>Binding</h1>
+				</section>
+				<section>
+					<h1>Transport</h1>
+					<p tagcloud bw class="fragment">
+						MSMQ
+						Amazon Simple Queue Service
+						RabbitMQ
+						IBM MQ
+						SQL Server
+						Azure Service Bus
+						ActiveMQ
+						Azure Storage Queues
+					</p>
+				</section>
+				<section>
+					<h1>Typowy scenariusz</h1>
+					<ol>
+						<li class="fragment grow" style="margin: 1em 0">Odbierz wiadomość</li>
+						<li class="fragment grow" style="margin: 1em 0">Zapisz coś do bazy danych</li>
+						<li class="fragment grow" style="margin: 1em 0">Wyślij wiadomość</li>
+					</ol>
+					<h2 class="fragment" style="margin: 1em 0">Co mogłoby pójść nie tak?</h2>
+				</section>
+				<section>
+					<h1>Jak zachować spójność?</h1>
+					<h3 class="fragment">Two-phase commit protocol</h3>
+					<h3 class="fragment">Koordynator transakcji</h3>
+				</section>
+				<section>
+					<h1>Obsługa błędów</h1>
+				</section>
+				<section>
+					<h1>Scenariusz nr 1</h1>
+					<h3 class="fragment">Deadlock podczas operacji bazodanowej</h3>
+					<blockquote class="fragment">
+						Transaction (Process ID 58) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction.
+					</blockquote>
+				</section>
+				<section>
+					<h1>Rozwiązanie</h1>
+					<h3>Retry</h3>
+					<img src="images/retry.png" />
+				</section>
+				<section>
+					<h1>Scenariusz nr 2</h1>
+					<h3 class="fragment">Ile trwa failover bazy danych?</h3>
+				</section>
+				<section>
+					<h1>Rozwiązanie</h1>
+					<h3>Retry z opóźnieniem</h3>
+					<img src="images/retry-delay.png" />
+				</section>
+				<section>
+					<h1>Scenariusz nr 3</h1>
+					<h3 class="fragment">Nie można zdeserializować wiadomości</h3>
+				</section>
+				<section>
+					<h1>Rozwiązanie</h1>
+					<h3>Kolejka z błędami</h3>
+					<img src="images/errors.png" />
+				</section>
+				<section>
+					<h3>Podsumowując...</h3>
+					<p>
+						<span class="fragment">Semantyka</span>
+						<span class="fragment"> + wzorce</span>
+						<span class="fragment"> + transakcje</span>
+						<span class="fragment"> + obsługa błędów</span>
+						<span class="fragment"> + ...</span>
+					</p>
+					<h2 class="fragment">=</h2>
+					<h1 class="fragment">Używajcie frameworków</h1>
+				</section>
+				<section>
+					<h1>Głodni wiedzy?</h1>
+					<div>
+						<div style="float: left; width: 50%;"">
+							<img src="images/cover-8-fallacies.png" />
+						</div>
+						<div style="float: right; width: 50%;">
+							<h3>Darmowy eBook</h3>
+							<h4 style="margin: 1em 0">Dr. Harvey and the 8 Fallacies of Distributed Computing</h4>
+						</div>
+					</div>
+					<h3><a href="http://go.particular.net/TGNET">http://go.particular.net/TGNET</a></h3>
+				</section>
+				<section>
+					<h2><q>Don't be strangers</q></h2>
+					<table>
+						<tr>
+							<td><img src="images/logo_gmail_128px.png" /></td>
+							<td style="vertical-align: middle;">marcin.hoppe@acm.org</td>
+						</tr>
+						<tr>
+							<td><img src="images/TwitterLogo_white.png" style="width:128px; height: 128px;" /></td>
+							<td style="vertical-align: middle;">@marcin_hoppe</td>
+						</tr>
+						<tr>
+							<td colspan="2"	 style="text-align: center;"><img src="images/Logo-White-128px-TM.png" /></td>
+						</tr>
+					</table>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/tagcloud/tagcloud.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
